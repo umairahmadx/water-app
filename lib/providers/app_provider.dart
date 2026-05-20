@@ -13,13 +13,7 @@ class AppProvider with ChangeNotifier {
   final dbHelper = DatabaseHelper.instance;
 
   List<Group> get groups => _groups;
-  Group? get currentGroup {
-    if (_currentGroupId == null) return null;
-    for (final group in _groups) {
-      if (group.id == _currentGroupId) return group;
-    }
-    return null;
-  }
+  Group? get currentGroup => _groups.where((g) => g.id == _currentGroupId).firstOrNull;
   List<Member> get currentMembers => _currentMembers;
   List<Payment> get currentPayments => _currentPayments;
   List<Debt> get currentDebts => _currentDebts;
