@@ -142,8 +142,11 @@ class AppProvider with ChangeNotifier {
   Debt? getCurrentTurnDebt() {
     if (_currentMembers.isEmpty || currentGroup == null) return null;
     final turnIndex = currentGroup!.turnIndex;
-    if (turnIndex < 0 || turnIndex >= _currentMembers.length) return null;
-    Member normalTurnMember = _currentMembers[turnIndex];
+    final safeTurnIndex =
+        (turnIndex < 0 || turnIndex >= _currentMembers.length)
+            ? _defaultTurnIndex
+            : turnIndex;
+    Member normalTurnMember = _currentMembers[safeTurnIndex];
     return _getDebtWhereCreditor(normalTurnMember.id!);
   }
 
