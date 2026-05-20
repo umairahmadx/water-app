@@ -112,7 +112,7 @@ class AppProvider with ChangeNotifier {
     if (_currentMembers.isEmpty || currentGroup == null) return null;
     final turnIndex = currentGroup!.turnIndex;
     if (turnIndex < 0 || turnIndex >= _currentMembers.length) {
-      return _currentMembers.first;
+      return _currentMembers[_defaultTurnIndex];
     }
 
     Member normalTurnMember = _currentMembers[turnIndex];
