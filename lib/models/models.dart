@@ -20,11 +20,29 @@ class Group {
     };
   }
 
+  Group copyWith({
+    int? id,
+    String? name,
+    double? amount,
+    int? turnIndex,
+  }) {
+    return Group(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      amount: amount ?? this.amount,
+      turnIndex: turnIndex ?? this.turnIndex,
+    );
+  }
+
   factory Group.fromMap(Map<String, dynamic> map) {
+    final amount = map['amount'];
+    if (amount is! num) {
+      throw StateError('Invalid group amount value: $amount');
+    }
     return Group(
       id: map['id'],
       name: map['name'],
-      amount: map['amount'],
+      amount: amount.toDouble(),
       turnIndex: map['turnIndex'],
     );
   }
@@ -91,11 +109,15 @@ class Payment {
   }
 
   factory Payment.fromMap(Map<String, dynamic> map) {
+    final amount = map['amount'];
+    if (amount is! num) {
+      throw StateError('Invalid payment amount value: $amount');
+    }
     return Payment(
       id: map['id'],
       groupId: map['groupId'],
       memberId: map['memberId'],
-      amount: map['amount'],
+      amount: amount.toDouble(),
       timestamp: map['timestamp'],
       paidForMemberId: map['paidForMemberId'],
     );

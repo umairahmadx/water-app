@@ -62,15 +62,15 @@ class SettingsScreen extends StatelessWidget {
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              TextField(
+              TextFormField(
                 decoration: const InputDecoration(labelText: 'Group Name'),
-                controller: TextEditingController(text: name),
+                initialValue: name,
                 onChanged: (val) => name = val,
               ),
-              TextField(
+              TextFormField(
                 decoration: const InputDecoration(labelText: 'Water Bottle Cost'),
                 keyboardType: TextInputType.number,
-                controller: TextEditingController(text: amountStr),
+                initialValue: amountStr,
                 onChanged: (val) => amountStr = val,
               ),
             ],

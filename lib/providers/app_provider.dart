@@ -4,6 +4,8 @@ import '../models/models.dart';
 import '../database/database_helper.dart';
 
 class AppProvider with ChangeNotifier {
+  static const int _defaultTurnIndex = 0;
+
   List<Group> _groups = [];
   int? _currentGroupId;
   List<Member> _currentMembers = [];
@@ -35,6 +37,16 @@ class AppProvider with ChangeNotifier {
     _currentMembers = await dbHelper.getMembers(groupId);
     _currentPayments = await dbHelper.getPayments(groupId);
     _currentDebts = await dbHelper.getDebts(groupId);
+
+    final group = currentGroup;
+    if (group != null &&
+        _currentMembers.isNotEmpty &&
+        (group.turnIndex < 0 || group.turnIndex >= _currentMembers.length)) {
+      final normalizedGroup = group.copyWith(turnIndex: _defaultTurnIndex);
+      await dbHelper.updateGroup(normalizedGroup);
+      _groups = await dbHelper.getGroups();
+    }
+
     await updateHomeWidget();
     notifyListeners();
   }
@@ -98,7 +110,9 @@ class AppProvider with ChangeNotifier {
   // then the DEBTOR is the one who actually owes the turn now.
   Member? get currentTurnMember {
     if (_currentMembers.isEmpty || currentGroup == null) return null;
-    Member normalTurnMember = _currentMembers[currentGroup!.turnIndex];
+    final safeTurnIndex = _safeTurnIndex(currentGroup!.turnIndex);
+    if (safeTurnIndex == null) return null;
+    Member normalTurnMember = _currentMembers[safeTurnIndex];
 
     // Check if this person is owed a turn (they are the creditor)
     final debt = _getDebtWhereCreditor(normalTurnMember.id!);
@@ -122,9 +136,19 @@ class AppProvider with ChangeNotifier {
     }
   }
 
+  int? _safeTurnIndex(int turnIndex) {
+    if (_currentMembers.isEmpty) return null;
+    if (turnIndex < 0 || turnIndex >= _currentMembers.length) {
+      return _defaultTurnIndex;
+    }
+    return turnIndex;
+  }
+
   Debt? getCurrentTurnDebt() {
     if (_currentMembers.isEmpty || currentGroup == null) return null;
-    Member normalTurnMember = _currentMembers[currentGroup!.turnIndex];
+    final safeTurnIndex = _safeTurnIndex(currentGroup!.turnIndex);
+    if (safeTurnIndex == null) return null;
+    Member normalTurnMember = _currentMembers[safeTurnIndex];
     return _getDebtWhereCreditor(normalTurnMember.id!);
   }
 
