@@ -4,6 +4,8 @@ import '../models/models.dart';
 import '../database/database_helper.dart';
 
 class AppProvider with ChangeNotifier {
+  static const int _defaultTurnIndex = 0;
+
   List<Group> _groups = [];
   int? _currentGroupId;
   List<Member> _currentMembers = [];
@@ -40,7 +42,7 @@ class AppProvider with ChangeNotifier {
     if (group != null &&
         _currentMembers.isNotEmpty &&
         (group.turnIndex < 0 || group.turnIndex >= _currentMembers.length)) {
-      final normalizedGroup = group.copyWith(turnIndex: 0);
+      final normalizedGroup = group.copyWith(turnIndex: _defaultTurnIndex);
       await dbHelper.updateGroup(normalizedGroup);
       _groups = await dbHelper.getGroups();
     }
