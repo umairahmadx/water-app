@@ -40,12 +40,7 @@ class AppProvider with ChangeNotifier {
     if (group != null &&
         _currentMembers.isNotEmpty &&
         (group.turnIndex < 0 || group.turnIndex >= _currentMembers.length)) {
-      final normalizedGroup = Group(
-        id: group.id,
-        name: group.name,
-        amount: group.amount,
-        turnIndex: 0,
-      );
+      final normalizedGroup = group.copyWith(turnIndex: 0);
       await dbHelper.updateGroup(normalizedGroup);
       _groups = await dbHelper.getGroups();
     }
