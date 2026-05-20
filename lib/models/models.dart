@@ -24,7 +24,7 @@ class Group {
     return Group(
       id: map['id'],
       name: map['name'],
-      amount: map['amount'],
+      amount: (map['amount'] as num).toDouble(),
       turnIndex: map['turnIndex'],
     );
   }
@@ -95,7 +95,7 @@ class Payment {
       id: map['id'],
       groupId: map['groupId'],
       memberId: map['memberId'],
-      amount: map['amount'],
+      amount: (map['amount'] as num).toDouble(),
       timestamp: map['timestamp'],
       paidForMemberId: map['paidForMemberId'],
     );

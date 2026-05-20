@@ -172,7 +172,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
               final isTurn = member.id == turnMember.id;
 
               // Find last payment date for this member
-              final lastPayment = provider.currentPayments.where((p) => p.memberId == member.id).firstOrNull;
+              Payment? lastPayment;
+              for (final payment in provider.currentPayments) {
+                if (payment.memberId == member.id) {
+                  lastPayment = payment;
+                  break;
+                }
+              }
               String lastPaidStr = lastPayment != null
                   ? DateFormat('MMM d, yyyy').format(DateTime.fromMillisecondsSinceEpoch(lastPayment.timestamp))
                   : 'Never';
