@@ -110,12 +110,8 @@ class AppProvider with ChangeNotifier {
   // then the DEBTOR is the one who actually owes the turn now.
   Member? get currentTurnMember {
     if (_currentMembers.isEmpty || currentGroup == null) return null;
-    final turnIndex = currentGroup!.turnIndex;
-    if (turnIndex < 0 || turnIndex >= _currentMembers.length) {
-      return _currentMembers[_defaultTurnIndex];
-    }
-
-    Member normalTurnMember = _currentMembers[turnIndex];
+    final safeTurnIndex = _safeTurnIndex(currentGroup!.turnIndex);
+    Member normalTurnMember = _currentMembers[safeTurnIndex];
 
     // Check if this person is owed a turn (they are the creditor)
     final debt = _getDebtWhereCreditor(normalTurnMember.id!);
@@ -139,13 +135,16 @@ class AppProvider with ChangeNotifier {
     }
   }
 
+  int _safeTurnIndex(int turnIndex) {
+    if (turnIndex < 0 || turnIndex >= _currentMembers.length) {
+      return _defaultTurnIndex;
+    }
+    return turnIndex;
+  }
+
   Debt? getCurrentTurnDebt() {
     if (_currentMembers.isEmpty || currentGroup == null) return null;
-    final turnIndex = currentGroup!.turnIndex;
-    final safeTurnIndex =
-        (turnIndex < 0 || turnIndex >= _currentMembers.length)
-            ? _defaultTurnIndex
-            : turnIndex;
+    final safeTurnIndex = _safeTurnIndex(currentGroup!.turnIndex);
     Member normalTurnMember = _currentMembers[safeTurnIndex];
     return _getDebtWhereCreditor(normalTurnMember.id!);
   }
