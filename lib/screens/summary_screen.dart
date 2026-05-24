@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 import '../providers/app_provider.dart';
 import '../models/models.dart';
+import '../widgets/glass_card.dart';
 
 class SummaryScreen extends StatelessWidget {
   const SummaryScreen({super.key});
@@ -55,8 +56,10 @@ class SummaryScreen extends StatelessWidget {
                 memberTotals[p.memberId] = (memberTotals[p.memberId] ?? 0) + p.amount;
               }
 
-              return Card(
-                margin: const EdgeInsets.all(8.0),
+              return GlassCard(
+                margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                backgroundColor: Theme.of(context).colorScheme.surfaceBright,
+                backgroundOpacity: 0.1,
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Column(
