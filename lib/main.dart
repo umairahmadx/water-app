@@ -40,14 +40,50 @@ class WaterTrackerApp extends StatelessWidget {
     return MaterialApp(
       title: 'Water Tracker',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
         useMaterial3: true,
+        scaffoldBackgroundColor: const Color(0xFF101415),
+        colorScheme: const ColorScheme.dark(
+          primary: Color(0xFF00F2FF),
+          onPrimary: Color(0xFF00363A),
+          primaryContainer: Color(0xFF006A71),
+          secondary: Color(0xFFADC6FF),
+          onSecondary: Color(0xFF002E69),
+          secondaryContainer: Color(0xFF4B8EFF),
+          surface: Color(0xFF101415),
+          onSurface: Color(0xFFE0E3E5),
+          error: Color(0xFFFFB4AB),
+          onError: Color(0xFF690005),
+        ),
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          centerTitle: true,
+        ),
+        fontFamily: 'Roboto', // Fallback sans-serif
       ),
       darkTheme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue, brightness: Brightness.dark),
         useMaterial3: true,
+        scaffoldBackgroundColor: const Color(0xFF101415),
+        colorScheme: const ColorScheme.dark(
+          primary: Color(0xFF00F2FF),
+          onPrimary: Color(0xFF00363A),
+          primaryContainer: Color(0xFF006A71),
+          secondary: Color(0xFFADC6FF),
+          onSecondary: Color(0xFF002E69),
+          secondaryContainer: Color(0xFF4B8EFF),
+          surface: Color(0xFF101415),
+          onSurface: Color(0xFFE0E3E5),
+          error: Color(0xFFFFB4AB),
+          onError: Color(0xFF690005),
+        ),
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          centerTitle: true,
+        ),
+        fontFamily: 'Roboto', // Fallback sans-serif
       ),
-      themeMode: ThemeMode.system,
+      themeMode: ThemeMode.dark, // Force dark mode for Glass UI
       home: const DashboardScreen(),
     );
   }

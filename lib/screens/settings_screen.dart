@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/app_provider.dart';
 import '../models/models.dart';
+import '../widgets/glass_card.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -18,7 +19,9 @@ class SettingsScreen extends StatelessWidget {
           return ListView(
             padding: const EdgeInsets.all(16.0),
             children: [
-              Card(
+              GlassCard(
+                backgroundColor: Theme.of(context).colorScheme.surfaceBright,
+                backgroundOpacity: 0.1,
                 child: ListTile(
                   title: const Text('Edit Group Details'),
                   subtitle: Text('Name: ${group.name} | Amount: \$${group.amount}'),
@@ -28,7 +31,9 @@ class SettingsScreen extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               const Text('Members', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-              ...provider.currentMembers.map((m) => Card(
+              ...provider.currentMembers.map((m) => GlassCard(
+                backgroundColor: Theme.of(context).colorScheme.surfaceBright,
+                backgroundOpacity: 0.1,
                 child: ListTile(
                   title: Text(m.name),
                   trailing: IconButton(

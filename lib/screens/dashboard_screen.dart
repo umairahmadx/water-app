@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 import '../providers/app_provider.dart';
+import '../widgets/glass_card.dart';
 import '../models/models.dart';
 import 'settings_screen.dart';
 import 'summary_screen.dart';
@@ -125,11 +126,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
       children: [
         const SizedBox(height: 20),
         // Active Payer Widget
-        Card(
+        GlassCard(
           margin: const EdgeInsets.symmetric(horizontal: 16),
-          color: Theme.of(context).colorScheme.primaryContainer,
-          child: Padding(
-            padding: const EdgeInsets.all(20.0),
+          backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+          backgroundOpacity: 0.2,
+          padding: const EdgeInsets.all(20.0),
             child: Column(
               children: [
                 const Text('Current Turn', style: TextStyle(fontSize: 16)),
@@ -163,7 +164,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   child: const Text('Someone else paying?'),
                 ),
               ],
-            ),
           ),
         ),
         const SizedBox(height: 20),
@@ -188,7 +188,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   ? dateFormat.format(DateTime.fromMillisecondsSinceEpoch(lastPayment.timestamp))
                   : 'Never';
 
-              return ListTile(
+              return GlassCard(
+                margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                backgroundColor: Theme.of(context).colorScheme.surfaceBright,
+                backgroundOpacity: 0.1,
+                child: ListTile(
                 leading: CircleAvatar(
                   backgroundColor: isTurn ? Theme.of(context).colorScheme.primary : Colors.grey,
                   child: Icon(Icons.person, color: isTurn ? Theme.of(context).colorScheme.onPrimary : Colors.white),
@@ -198,6 +202,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 trailing: isTurn
                     ? const Chip(label: Text('Current', style: TextStyle(fontSize: 12)))
                     : const SizedBox.shrink(),
+                ),
               );
             },
           ),
@@ -288,13 +293,18 @@ class _DashboardScreenState extends State<DashboardScreen> {
               itemBuilder: (context, index) {
                 final member = provider.currentMembers[index];
                 if (member.id == provider.currentTurnMember!.id) return const SizedBox.shrink(); // Hide the unavailable person
-                return ListTile(
+                return GlassCard(
+                margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                backgroundColor: Theme.of(context).colorScheme.surfaceBright,
+                backgroundOpacity: 0.1,
+                child: ListTile(
                   title: Text(member.name),
                   onTap: () {
                     provider.markPaidOnBehalf(member);
                     Navigator.pop(context);
                   },
-                );
+                ),
+              );
               },
             ),
           ),
