@@ -36,7 +36,7 @@ class SettingsScreen extends StatelessWidget {
                     onPressed: () => _showDeleteMemberDialog(context, provider, m.id!),
                   ),
                 ),
-              )).toList(),
+              )),
               const SizedBox(height: 20),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(backgroundColor: Colors.red, foregroundColor: Colors.white),

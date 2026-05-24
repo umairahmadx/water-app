@@ -20,7 +20,7 @@ Future<void> backgroundCallback(Uri? uri) async {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  HomeWidget.registerBackgroundCallback(backgroundCallback);
+  HomeWidget.registerInteractivityCallback(backgroundCallback);
 
   runApp(
     MultiProvider(
