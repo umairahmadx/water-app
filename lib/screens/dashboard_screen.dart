@@ -110,6 +110,17 @@ class _DashboardScreenState extends State<DashboardScreen> {
     final turnMember = provider.currentTurnMember!;
     final debt = provider.getCurrentTurnDebt();
 
+    // ⚡ Bolt: Cache DateFormat to avoid recreating it for every list item
+    final dateFormat = DateFormat('MMM d, yyyy');
+
+    // ⚡ Bolt: Pre-compute last payments map from O(N^2) to O(N) lookup
+    final Map<int, Payment> lastPaymentsByMember = {};
+    for (var p in provider.currentPayments) {
+      if (!lastPaymentsByMember.containsKey(p.memberId)) {
+        lastPaymentsByMember[p.memberId] = p; // Assuming payments are ordered by timestamp DESC
+      }
+    }
+
     return Column(
       children: [
         const SizedBox(height: 20),
@@ -171,10 +182,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
               final member = provider.currentMembers[index];
               final isTurn = member.id == turnMember.id;
 
-              // Find last payment date for this member
-              final lastPayment = provider.currentPayments.where((p) => p.memberId == member.id).firstOrNull;
+              // ⚡ Bolt: Use pre-computed map and cached DateFormat
+              final lastPayment = lastPaymentsByMember[member.id];
               String lastPaidStr = lastPayment != null
-                  ? DateFormat('MMM d, yyyy').format(DateTime.fromMillisecondsSinceEpoch(lastPayment.timestamp))
+                  ? dateFormat.format(DateTime.fromMillisecondsSinceEpoch(lastPayment.timestamp))
                   : 'Never';
 
               return ListTile(

@@ -30,9 +30,13 @@ class SummaryScreen extends StatelessWidget {
 
           // Group payments by month
           final Map<String, List<Payment>> paymentsByMonth = {};
+
+          // ⚡ Bolt: Cache DateFormat to avoid recreating it for every payment in the loop
+          final dateFormat = DateFormat('MMMM yyyy');
+
           for (var p in provider.currentPayments) {
             final date = DateTime.fromMillisecondsSinceEpoch(p.timestamp);
-            final monthStr = DateFormat('MMMM yyyy').format(date);
+            final monthStr = dateFormat.format(date);
             if (!paymentsByMonth.containsKey(monthStr)) {
               paymentsByMonth[monthStr] = [];
             }
